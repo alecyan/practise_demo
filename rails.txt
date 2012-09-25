@@ -28,6 +28,15 @@ rake db:migrate VERSION=20120217032804 执行某个版本的
 rake db:rollback往回退一个版本
 在数据库中会多出一个版本控制的表schema_migrations，这里面存的就是生成数据库的各个版本
 rake routes可以查看可以用的routes
+##########################################
+github的一些操作
+ssh-keygen -C 'your@email.address' -t rsa 创建SSH密匙
+SSH -v git@github.com 测试连接
+下面的二句是上传代码
+git remote add origin git@github.com:你的github用户名/你的github项目名.git
+git push origin master
+git clone git@github.com:你的github用户名/你的github项目名.git 从github上clone代码
+git pull origin从上面拉最新的并合并代码
 ###########################################
 http://www.rubyonrails.org官网
 rails 之gem命令  http://www.cnblogs.com/orez88/articles/1852117.html
