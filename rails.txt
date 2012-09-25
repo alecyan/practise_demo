@@ -1,0 +1,216 @@
+rails new blog --database=mysql --skip-bundle指定mysql数据库
+
+rails new demo_app --skip-bundle
+cd demo_app
+bundle install --local
+
+rails console rails console --sandbox
+user.destroy user.create user.save user.first user.all
+
+rails s
+
+rake db:migrate
+rake db:rollback
+rake db:reset this will clear out the db data
+
+rails generate controller Users new
+rails generate model User name:string email:string
+
+user.errors.full_messages
+Rails.env
+user = User.create(:name=>"alecyan7", :email=>"alecyan7@3234.com",:password=>"123456")
+
+gem install mysql2 -v 0.2.6安装某个版本的包
+gem q -rn mysql2以软件名列服务器上的这个软件
+
+rake -T db查看rake的命令
+rake db:migrate VERSION=20120217032804 执行某个版本的
+rake db:rollback往回退一个版本
+在数据库中会多出一个版本控制的表schema_migrations，这里面存的就是生成数据库的各个版本
+rake routes可以查看可以用的routes
+###########################################
+http://www.rubyonrails.org官网
+rails 之gem命令  http://www.cnblogs.com/orez88/articles/1852117.html
+http://railsinstaller.org/ rails的集成环境的下载地址
+
+http://wxianfeng.com/2011/04/17/rails-limit rails和mysql的数据类型对应关糸
+http://www.cslog.cn/Content/ruby_on_rails_database_operation/
+http://www.bcbbs.net/News/Content29680.aspx
+########################################
+rails generate migration add_password_to_users encrypted_password:string
+rake db:migrate
+rails console
+# User可以显示这个表的结构
+在CreateUsers里面定义的一个字段怎么才能生效，貌似用rake db:migrate没有用的
+<%= link_to user_path(user)%>在页面上创建一个到用户的链接
+User.count查看对象的个数
+localhost:3000/users同样的地址为什么form生成的地址会不一样，一个跳到create另一个跳到update
+gem的升级 http://lectery.iteye.com/blog/339528
+
+css文件放在E:\devruby\rails_projects\first_app\app\assets\stylesheets这里,然后在E:\devruby\rails_projects\first_app\app\views\layouts\application.html.erb
+里边进行引用就可以了<%= stylesheet_link_tag    "custom" %>,书上说放在E:\devruby\rails_projects\first_app\public\stylesheets这里,可是没有成功,因为在生成的
+链接的时候总是这样的<link href="/assets/custom.css?body=1" media="screen" rel="stylesheet" type="text/css" />
+
+SessionHelper默认情况下，所有的帮助类都能在view里面直接用，在控制器里却不能用，所以如果在控制器里用的话，需要引进去
+session[:remember_token] = user.id
+User.find_by_id(session[:remember_token])
+cookies[:remember_token] = {:value => user.id,:expires =>20.years.from_now.utc}
+User.find_by_id(cookies[:remember_token])
+
+redirect_to 与render的区别
+例：render 'new'
+	redirect_to user
+	
+<%=cookies.signed[:remember_token]%>
+<%=cookies.signed[:remember_token
+
+module可以在多个地方用
+new_record?可以判断一个对象是不是新生成的，然后根据结果跳到相应的页面
+
+<%= gravatar_image_tag user.email %>
+gem list --local
+
+在教程中gemfilek文件 gem 'rspec-rails', '2.0.1'会报错,当执行rake db:migrate命令时,在网上搜索说那个版本有bug应改为gem 'rspec-rails', '2.6.1',
+修改后果然顺利进行
+http://stackoverflow.com/questions/7405011/problem-migrating-w-sqlite3-receive-error-message-undefined-method-prerequi
+
+运行rake db:populate的时候,报db/test.sqlite3 already exists这个错,后来把这个文件删除掉才可以,不知道这个是干什么的,删除掉会不会有什么影响
+原来的文件里有12k,新生成的文件里什么都没有
+
+https://github.com/railstutoriali源代码地址
+
+rails generate scaffold User name:string email:string
+rails destroy scaffold User 
+rake db:migrate
+rails generate scaffold Micropost content:string user_id:integer
+rake db:migrate
+rails generate controller Pages home contact
+
+rake db:create 生成数据库
+rake -T有来显示所有的rake的命令
+
+rake db:rollback　只有这一个命令就是向前回滚一个版本
+如果rake db:rollback　STEP=5 这就是向前回滚５个版本,同时为清除数据库中保存版本的表的数据schema_migrations
+
+在controller里跳转到其它的action可用 render :action => 'view'这样就跳到view这个action了
+跳转到其它的页面是　render 'view'
+如果你需要创建与模型无关的表单，可以使用 form_tag 方法
+http://www.perfectline.ee/blog/custom-dynamic-error-pages-in-ruby-on-rails ruby异常的处理
+http://www.jonathanhui.com/ruby-rails-3-view-form-helper-file-upload-download rails3 form
+要把public文件夹里的index干掉，在routes.rb中配置的root路径才有用：例如：root :to => 'users#home'
+http://www.cnblogs.com/tambor/archive/2012/01/04/rails_migrate.html 快速的创建一个mysql的工程的具体的例子，说的很详细
+使用rails高效开发之快速创建控制器 视图 模型和数据库文件
+http://ihower.tw/rails3/index.html 实战圣经
+http://chinaonrails.com/go/ask rails的一个学习网站
+http://lee2013.iteye.com/blog/1018343 表单的嵌套也是一个完整的例子
+rails g model comment commenter:string body:text post:references可以创建模型的时候建立两个模型的关联
+<%= debug(params) if Rails.env.development? %>页面debug时可以用
+#######################################
+如果一个form里含有不同的model的字段，为了在controller里得到参数的方便可以这样写
+<%= form_tag("/posts", :method => "get") do %>
+
+  <%= label_tag(:name, "name:") %>
+  <%= text_field_tag "post[name]"  %>
+  <%= label_tag(:body, "body:") %>
+  <%= text_field_tag("comment[body]") %>
+  
+  <%= submit_tag("submit") %>
+<% end %>
+
+controller里可以这样写
+@post = Post.new(params[:post])
+@comment = Comment.new(params[:comment])
+render :text => @post.name.to_s + "----" + @comment.commenter.to_s
+#######################################
+#######################################
+数据库的连接
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: test_dev
+  pool: 5
+  username: root
+  password: "12345"
+  host: 127.0.0.1
+#######################################
+class CreateStocks < ActiveRecord::Migration
+  def change
+    create_table :stocks do |t|
+      t.string :agent_number,:limit=>10
+      t.decimal :stock_money
+      t.date :stock_time
+      t.datetime :input_time
+      t.string :input_person,:limit=>50
+      t.string :level_code,:limit=>1
+      t.string :recommend_level_code,:limit=>1
+      t.string :check_out_flag,:limit=>1
+      t.datetime :check_out_time
+      t.timestamps
+    end
+  end
+end
+下面是生成的sql
+CREATE TABLE `stocks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `agent_number` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `stock_money` decimal(10,0) DEFAULT NULL,
+  `stock_time` date DEFAULT NULL,
+  `input_time` datetime DEFAULT NULL,
+  `input_person` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `level_code` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `recommend_level_code` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `check_out_flag` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `check_out_time` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+#######################################
+user.rb
+
+class User < ActiveRecord::Base
+	attr_accessible :name , :email, :password, :password_confirmation
+	email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+	validates :name , :presence =>true,
+			          :length =>{:maximum =>10}
+	validates :email , :presence =>true,
+			          :length =>{:maximum =>10},
+					  :format => { :with => email_regex},
+					  :uniqueness =>true
+	validates :password , :presence =>true,
+			          :length =>{:within=>6..10},
+					  :confirmation =>true
+end
+#######################################
+20120111080738_create_users.rb
+class CreateUsers < ActiveRecord::Migration
+  def change
+    create_table :users do |t|
+      t.string :name
+      t.string :email
+	  t.string :password
+
+      t.timestamps
+    end
+  end
+end
+#######################################
+class UsersController < ApplicationController
+  def new
+	@title = "Sign Up!"
+  end
+  def show
+	@user = User.find(params[:id])
+  end
+end
+#######################################
+routes.rb
+resources :users
+  match '/users/id', :to => 'users#show'
+#######################################
+show.html.erb
+<h1>Users#show</h1>
+<h1><%=@user.name%>-----<%=@user.email%></h1>
+<p>Find me in app/views/users/show.html.erb</p>
+#######################################
